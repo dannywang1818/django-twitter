@@ -1,4 +1,4 @@
-from accounts.api.serializers import UserSerializerForFriendships
+from accounts.api.serializers import UserSerializerForFriendship
 from friendships.models import Friendship
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -8,7 +8,7 @@ from rest_framework.exceptions import ValidationError
 # 即 model_instance.xxx 来获得数据
 # https://www.django-rest-framework.org/api-guide/serializers/#specifying-fields-explicitly
 class FollowerSerializer(serializers.ModelSerializer):
-    user = UserSerializerForFriendships(source='from_user')
+    user = UserSerializerForFriendship(source='from_user')
 
     class Meta:
         model = Friendship
@@ -16,7 +16,7 @@ class FollowerSerializer(serializers.ModelSerializer):
 
 
 class FollowingSerializer(serializers.ModelSerializer):
-    user = UserSerializerForFriendships(source='to_user')
+    user = UserSerializerForFriendship(source='to_user')
 
     class Meta:
         model = Friendship

@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from tweets.models import Tweet
-from accounts.api.serializers import UserSerializerForTweets
+from accounts.api.serializers import UserSerializerForTweet
 from comments.api.serializers import CommentSerializer
 from likes.services import LikeService
 from likes.api.serializers import LikeSerializer
 
 
 class TweetSerializer(serializers.ModelSerializer):
-    user = UserSerializerForTweets()
+    user = UserSerializerForTweet()
     comments_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     has_liked = serializers.SerializerMethodField()
