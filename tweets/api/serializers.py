@@ -90,7 +90,6 @@ class TweetSerializerForCreate(serializers.ModelSerializer):
         user = self.context['request'].user
         content = validated_data['content']
         tweet = Tweet.objects.create(user=user, content=content)
-        print(validated_data)
         if validated_data.get('files'):
             TweetService.create_photos_from_files(
                 tweet,
