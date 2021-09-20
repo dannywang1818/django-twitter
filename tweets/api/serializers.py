@@ -1,11 +1,11 @@
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from tweets.models import Tweet
 from accounts.api.serializers import UserSerializerForTweet
 from comments.api.serializers import CommentSerializer
-from likes.services import LikeService
 from likes.api.serializers import LikeSerializer
+from likes.services import LikeService
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from tweets.constants import TWEET_PHOTOS_UPLOAD_LIMIT
+from tweets.models import Tweet
 from tweets.services import TweetService
 
 
@@ -31,9 +31,11 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def get_likes_count(self, obj):
         return obj.like_set.count()
+        # return obj.likes_count
 
     def get_comments_count(self, obj):
         return obj.comment_set.count()
+        # return obj.comments_count
 
     def get_has_liked(self, obj):
         return LikeService.has_liked(self.context['request'].user, obj)
