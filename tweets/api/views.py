@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from ratelimit.decorators import ratelimit
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -45,6 +47,7 @@ class TweetViewsSet(viewsets.GenericViewSet):
         )
         return self.get_paginated_response(serializer.data)
 
+    @method_decorator(ratelimit(key='user_or_ip', rate='5/s', method='GET', block=True))
     def retrieve(self, request, *args, **kwargs):
         serializer = TweetSerializerForDetail(
             self.get_object(),
@@ -52,6 +55,8 @@ class TweetViewsSet(viewsets.GenericViewSet):
         )
         return Response(serializer.data)
 
+    @method_decorator(ratelimit(key='user', rate='1/s', method='POST', block=True))
+    @method_decorator(ratelimit(key='user', rate='5/m', method='POST', block=True))
     def create(self, request):
         serializer = TweetSerializerForCreate(
             data=request.data,
