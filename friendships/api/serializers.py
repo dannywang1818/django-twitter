@@ -1,6 +1,5 @@
 from accounts.api.serializers import UserSerializerForFriendship
 from accounts.services import UserService
-from friendships.models import Friendship
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from friendships.services import FriendshipService
@@ -53,13 +52,10 @@ class FollowingSerializer(BaseFriendshipSerializer):
         return obj.to_user_id
 
 
-class FriendshipSerializerForCreate(serializers.ModelSerializer):
+class FriendshipSerializerForCreate(serializers.Serializer):
+
     from_user_id = serializers.IntegerField()
     to_user_id = serializers.IntegerField()
-
-    class Meta:
-        model = Friendship
-        fields = ('from_user_id', 'to_user_id')
 
     def validate(self, data):
         if data['from_user_id'] == data['to_user_id']:
@@ -75,3 +71,6 @@ class FriendshipSerializerForCreate(serializers.ModelSerializer):
             from_user_id=from_user_id,
             to_user_id=to_user_id,
         )
+
+    def update(self, instance, validated_data):
+        pass
